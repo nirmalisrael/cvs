@@ -2,6 +2,7 @@ package com.algoriant.cvs.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Date;
 
@@ -26,6 +27,7 @@ public class StudentRequest {
     private long phoneNumber;
 
     private String address;
+
 
     public String getStudentName() {
         return studentName;

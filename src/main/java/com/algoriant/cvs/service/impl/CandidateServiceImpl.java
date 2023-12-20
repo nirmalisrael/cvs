@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CandidateServiceImpl implements CandidateService {
@@ -32,22 +33,31 @@ public class CandidateServiceImpl implements CandidateService {
         Election election = electionRepository.findById(candidateDTO.getElectionName()).orElseThrow(()
                 -> new RuntimeException("Election not found"));
 
-
-        return null;
+        Candidate candidate = new Candidate();
+        candidate.setLotNo(candidateDTO.getLotNo());
+        candidate.setCandidateName(candidateDTO.getCandidateName());
+        candidate.setElection(election);
+        candidate.setStudent(student);
+        return candidateRepository.save(candidate);
     }
 
     @Override
-    public String removeCandidate(Long lotNo) {
+    public Long removeCandidate(Long lotNo) {
+        Optional<Candidate> optionalCandidate = candidateRepository.findById(lotNo);
+        if (optionalCandidate.isPresent()) {
+            candidateRepository.deleteById(lotNo);
+            return lotNo;
+        }
         return null;
     }
 
     @Override
     public Candidate getCandidateById(Long lotNo) {
-        return null;
+        return candidateRepository.findById(lotNo).orElse(null);
     }
 
     @Override
     public List<Candidate> getAllCandidates() {
-        return null;
+        return candidateRepository.findAll();
     }
 }

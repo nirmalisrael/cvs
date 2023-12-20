@@ -10,6 +10,7 @@ import com.sun.istack.NotNull;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.Table;
 import java.util.Date;
 
@@ -152,4 +153,5 @@ public class Student {
     public void setAddress(String address) {
         this.address = address;
     }
+
 }

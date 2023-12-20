@@ -32,8 +32,7 @@ public class ElectionServiceImpl implements ElectionService {
 
     @Override
     public Election getElectionById(String electionName) {
-        Optional<Election> optionalElection = electionRepository.findById(electionName);
-        return optionalElection.orElse(null);
+        return electionRepository.findById(electionName).orElse(null);
     }
 
     @Override

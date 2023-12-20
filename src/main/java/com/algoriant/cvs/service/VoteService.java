@@ -1,5 +1,6 @@
 package com.algoriant.cvs.service;
 
+import com.algoriant.cvs.dto.VoteDTO;
 import com.algoriant.cvs.entity.Vote;
 import org.springframework.stereotype.Service;
 
@@ -8,11 +9,11 @@ import java.util.List;
 @Service
 public interface VoteService {
 
-    Vote createVote(Vote candidate);
+    Vote createVote(VoteDTO voteDTO);
 
-    String removeVote(Long lotNo);
+    String removeAllVotes();
 
-    Vote getVoteById(Vote lotNo);
+    Boolean getVoteByDeptNo(String deptNo);
 
     List<Vote> getAllVotes();
 }

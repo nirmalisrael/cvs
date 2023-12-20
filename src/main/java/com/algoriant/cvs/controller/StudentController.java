@@ -8,11 +8,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/cvs", produces = {MediaType.APPLICATION_JSON_VALUE})
+@RequestMapping(value = "/cvs", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
 public class StudentController {
 
     @Autowired
@@ -28,7 +29,8 @@ public class StudentController {
     }
 
     @PutMapping(value = "/modifyStudent")
-    public ResponseEntity<Student> modifyStudent(@RequestParam String deptNo, @RequestBody StudentRequest studentRequest) {
+    public ResponseEntity<Student> modifyStudent(@RequestParam String deptNo,
+                                                 @RequestBody StudentRequest studentRequest) {
         try {
             return new ResponseEntity<>(studentService.modifyStudent(deptNo, studentRequest), HttpStatus.OK);
         } catch (Exception ex) {
