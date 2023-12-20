@@ -11,13 +11,15 @@ public class Vote {
     private Long id;
 
     @OneToOne
-    @JoinColumn(name = "dept_no", unique = true)
+    @JoinColumn(name = "dept_no")
     private Student student;
 
     @ManyToOne
+    @JoinColumn(name = "election_name")
     Election election;
 
     @ManyToOne
+    @JoinColumn(name = "lot_no")
     private Candidate candidate;
 
     public Candidate getCandidate() {

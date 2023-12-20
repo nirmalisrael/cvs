@@ -44,7 +44,7 @@ public class VoteServiceImpl implements VoteService {
         vote.setCandidate(candidate);
         vote.setStudent(student);
         vote = voteRepository.save(vote);
-        candidate.setVoteCount(candidate.getVoteCount()+1);
+//        candidate.setVoteCount(candidate.getVoteCount()+1);
         candidateRepository.save(candidate);
         return vote;
     }

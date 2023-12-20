@@ -8,14 +8,11 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sun.istack.NotNull;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Lob;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Entity
-@Table(name = "student_details")
 public class Student {
 
     @Id
@@ -50,6 +47,9 @@ public class Student {
 
     @NotNull
     private String address;
+
+    @OneToMany(mappedBy = "student")
+    private List<Vote> votes;
 
     public Student() { }
 

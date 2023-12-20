@@ -5,16 +5,20 @@ import com.sun.istack.NotNull;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.util.Date;
+import java.util.List;
 
 @Entity
-@Table(name = "election_details")
 public class Election {
 
     @NotNull
     @Id
     private String electionName;
+
+    @OneToMany(mappedBy = "election")
+    private List<Candidate> candidates;
 
     @NotNull
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")

@@ -16,13 +16,12 @@ public class Candidate {
     private String candidateName;
 
     @ManyToOne
+    @JoinColumn(name = "election_name")
     private Election election;
 
     @NotNull
     @ManyToOne
     private Student student;
-
-    private Long voteCount;
 
     public Long getLotNo() {
         return lotNo;
@@ -56,11 +55,4 @@ public class Candidate {
         this.student = student;
     }
 
-    public Long getVoteCount() {
-        return voteCount;
-    }
-
-    public void setVoteCount(Long voteCount) {
-        this.voteCount = voteCount;
-    }
 }
