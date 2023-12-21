@@ -10,13 +10,19 @@ import com.algoriant.cvs.repository.ElectionRepository;
 import com.algoriant.cvs.repository.StudentRepository;
 import com.algoriant.cvs.repository.VoteRepository;
 import com.algoriant.cvs.service.VoteService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
 @Service
 public class VoteServiceImpl implements VoteService {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(VoteServiceImpl.class);
 
     @Autowired
     VoteRepository voteRepository;
@@ -31,37 +37,28 @@ public class VoteServiceImpl implements VoteService {
     StudentRepository studentRepository;
 
     @Override
-    public Vote createVote(VoteDTO voteDTO) {
+    public VoteDTO createVote(VoteDTO voteDTO) {
         Student student = studentRepository.findById(voteDTO.getDeptNo()).orElseThrow(()
                 -> new RuntimeException("Student not found"));
-        Candidate candidate = candidateRepository.findById(voteDTO.getLotNo()).orElseThrow(()
+        Candidate candidate = candidateRepository.findById(voteDTO.getCandidateId()).orElseThrow(()
                 -> new RuntimeException("Candidate not found"));
         Election election = electionRepository.findById(voteDTO.getElectionName()).orElseThrow(()
                 -> new RuntimeException("Election not found"));
 
+        if (voteRepository.hasStudentVotedForElection(student, election)) {
+            LOGGER.error("Student already voted");
+            return null;
+        }
         Vote vote = new Vote();
+        vote.setStudent(student);
         vote.setElection(election);
         vote.setCandidate(candidate);
-        vote.setStudent(student);
-        vote = voteRepository.save(vote);
-//        candidate.setVoteCount(candidate.getVoteCount()+1);
-        candidateRepository.save(candidate);
-        return vote;
+        return new VoteDTO(voteRepository.save(vote));
     }
 
     @Override
     public String removeAllVotes() {
         voteRepository.deleteAll();
         return "All votes are removed";
-    }
-
-    @Override
-    public Boolean getVoteByDeptNo(String deptNo) {
-        return voteRepository.findByDeptNo(deptNo).isPresent();
-    }
-
-    @Override
-    public List<Vote> getAllVotes() {
-        return voteRepository.findAll();
     }
 }

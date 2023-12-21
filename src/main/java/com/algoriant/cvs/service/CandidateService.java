@@ -11,9 +11,9 @@ public interface CandidateService {
 
     Candidate createCandidate(CandidateDTO candidate);
 
-    Long removeCandidate(Long lotNo);
+    String removeCandidate(String candidateId);
 
-    Candidate getCandidateById(Long lotNo);
+    CandidateDTO getCandidateById(String candidateId);
 
-    List<Candidate> getAllCandidates();
+    List<CandidateDTO> getAllCandidates();
 }

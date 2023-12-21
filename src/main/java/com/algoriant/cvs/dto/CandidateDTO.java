@@ -1,8 +1,10 @@
 package com.algoriant.cvs.dto;
 
+import com.algoriant.cvs.entity.Candidate;
+
 public class CandidateDTO {
 
-    private Long lotNo;
+    private String candidateId;
 
     private String candidateName;
 
@@ -10,12 +12,22 @@ public class CandidateDTO {
 
     private String deptNo;
 
-    public Long getLotNo() {
-        return lotNo;
+    public CandidateDTO(Candidate candidate) {
+        this.candidateId = candidate.getCandidateId();
+        this.candidateName = candidate.getCandidateName();
+        this.electionName = candidate.getElection().getElectionName();
+        this.deptNo = candidate.getStudent().getDeptNo();
     }
 
-    public void setLotNo(Long lotNo) {
-        this.lotNo = lotNo;
+    public CandidateDTO() {
+    }
+
+    public String getCandidateId() {
+        return candidateId;
+    }
+
+    public void setCandidateId(String candidateId) {
+        this.candidateId = candidateId;
     }
 
     public String getCandidateName() {

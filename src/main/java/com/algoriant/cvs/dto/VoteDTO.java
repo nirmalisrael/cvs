@@ -1,20 +1,30 @@
 package com.algoriant.cvs.dto;
 
 
+import com.algoriant.cvs.entity.Vote;
+
 public class VoteDTO {
 
-    private Long lotNo;
+    private String candidateId;
 
     private String deptNo;
 
     private String electionName;
 
-    public Long getLotNo() {
-        return lotNo;
+    public VoteDTO(){}
+
+    public VoteDTO(Vote vote) {
+        this.candidateId = vote.getCandidate().getCandidateId();
+        this.deptNo = vote.getStudent().getDeptNo();
+        this.electionName = vote.getElection().getElectionName();
     }
 
-    public void setLotNo(Long lotNo) {
-        this.lotNo = lotNo;
+    public String getCandidateId() {
+        return candidateId;
+    }
+
+    public void setCandidateId(String candidateId) {
+        this.candidateId = candidateId;
     }
 
     public String getDeptNo() {

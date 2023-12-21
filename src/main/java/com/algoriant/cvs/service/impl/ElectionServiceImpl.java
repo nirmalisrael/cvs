@@ -1,5 +1,6 @@
 package com.algoriant.cvs.service.impl;
 
+import com.algoriant.cvs.dto.ElectionDTO;
 import com.algoriant.cvs.entity.Election;
 import com.algoriant.cvs.repository.ElectionRepository;
 import com.algoriant.cvs.service.ElectionService;
@@ -16,8 +17,8 @@ public class ElectionServiceImpl implements ElectionService {
     ElectionRepository electionRepository;
 
     @Override
-    public Election createElection(Election election) {
-        return electionRepository.save(election);
+    public Election createElection(ElectionDTO electionDTO) {
+        return electionRepository.save(new Election(electionDTO.getElectionName(), electionDTO.getEndDate()));
     }
 
     @Override

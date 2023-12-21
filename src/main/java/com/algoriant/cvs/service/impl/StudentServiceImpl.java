@@ -1,6 +1,7 @@
 package com.algoriant.cvs.service.impl;
 
 import com.algoriant.cvs.dto.StudentRequest;
+import com.algoriant.cvs.dto.StudentResponse;
 import com.algoriant.cvs.entity.Role;
 import com.algoriant.cvs.entity.Student;
 import com.algoriant.cvs.entity.User;
@@ -72,12 +73,12 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public Student modifyStudent(String deptNo, StudentRequest studentRequest) {
+    public StudentResponse modifyStudent(String deptNo, StudentRequest studentRequest) {
         Optional<Student> optionalStudent = studentRepository.findById(deptNo);
         if (optionalStudent.isPresent()) {
              Student student = new Student(studentRequest);
              student.setDeptNo(optionalStudent.get().getDeptNo());
-             return studentRepository.save(student);
+             return new StudentResponse(studentRepository.save(student));
         } else {
             return null;
         }
@@ -95,13 +96,18 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public Student getStudentById(String deptNo) {
+    public StudentResponse getStudentById(String deptNo) {
         Optional<Student> optionalStudent = studentRepository.findById(deptNo);
-        return optionalStudent.orElse(null);
+        return new StudentResponse(optionalStudent.get());
     }
 
     @Override
-    public List<Student> getAllStudents() {
-        return new ArrayList<>(studentRepository.findAll());
+    public List<StudentResponse> getAllStudents() {
+        List<Student> students = new ArrayList<>(studentRepository.findAll());
+        List<StudentResponse> studentResponses = new ArrayList<>();
+        for (Student student: students) {
+                studentResponses.add(new StudentResponse(student));
+        }
+        return studentResponses;
     }
 }

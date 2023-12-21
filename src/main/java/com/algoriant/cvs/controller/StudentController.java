@@ -1,6 +1,7 @@
 package com.algoriant.cvs.controller;
 
 import com.algoriant.cvs.dto.StudentRequest;
+import com.algoriant.cvs.dto.StudentResponse;
 import com.algoriant.cvs.entity.Student;
 import com.algoriant.cvs.service.impl.StudentServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,12 +25,13 @@ public class StudentController {
         try {
             return new ResponseEntity<>(studentService.createStudent(studentRequest), HttpStatus.OK);
         } catch (Exception ex) {
+            ex.printStackTrace();
             return new ResponseEntity<>(null, HttpStatus.NOT_ACCEPTABLE);
         }
     }
 
     @PutMapping(value = "/modifyStudent")
-    public ResponseEntity<Student> modifyStudent(@RequestParam String deptNo,
+    public ResponseEntity<StudentResponse> modifyStudent(@RequestParam String deptNo,
                                                  @RequestBody StudentRequest studentRequest) {
         try {
             return new ResponseEntity<>(studentService.modifyStudent(deptNo, studentRequest), HttpStatus.OK);
@@ -48,7 +50,7 @@ public class StudentController {
     }
 
     @GetMapping(value = "/getStudentById")
-    public ResponseEntity<Student> getStudentById(String deptNo) {
+    public ResponseEntity<StudentResponse> getStudentById(String deptNo) {
         try {
             return new ResponseEntity<>(studentService.getStudentById(deptNo), HttpStatus.OK);
         } catch (Exception ex) {
@@ -57,9 +59,10 @@ public class StudentController {
     }
 
     @GetMapping(value = "/getAllStudents")
-    public ResponseEntity<List<Student>> getAllStudents() {
+    public ResponseEntity<List<StudentResponse>> getAllStudents() {
         try {
-            return new ResponseEntity<>(studentService.getAllStudents(), HttpStatus.OK);
+            List<StudentResponse> students = studentService.getAllStudents();
+            return new ResponseEntity<>(students, HttpStatus.OK);
         } catch (Exception ex) {
             return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
         }

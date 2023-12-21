@@ -1,5 +1,6 @@
 package com.algoriant.cvs.controller;
 
+import com.algoriant.cvs.dto.ElectionDTO;
 import com.algoriant.cvs.entity.Election;
 import com.algoriant.cvs.service.impl.ElectionServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,9 +19,9 @@ public class ElectionController {
     ElectionServiceImpl electionService;
 
     @PostMapping(value = "/createElection")
-    public ResponseEntity<Election> createElection(@RequestBody Election election) {
+    public ResponseEntity<Election> createElection(@RequestBody ElectionDTO electionDTO) {
         try {
-            return new ResponseEntity<>(electionService.createElection(election), HttpStatus.OK);
+            return new ResponseEntity<>(electionService.createElection(electionDTO), HttpStatus.OK);
         } catch (Exception exception) {
             return new ResponseEntity<>(null, HttpStatus.NOT_ACCEPTABLE);
         }
@@ -49,7 +50,8 @@ public class ElectionController {
     @GetMapping(value = "/getAllElections")
     public ResponseEntity<List<Election>> getAllElections() {
         try {
-            return new ResponseEntity<>(electionService.getAllElections(), HttpStatus.OK);
+            List<Election> elections = electionService.getAllElections();
+            return new ResponseEntity<>(elections, HttpStatus.OK);
         } catch (Exception exception) {
             return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
         }

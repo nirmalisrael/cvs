@@ -19,10 +19,11 @@ public class VoteController {
     VoteServiceImpl voteService;
 
     @PostMapping(value = "/createVote")
-    public ResponseEntity<Vote> createVote(@RequestBody VoteDTO voteDTO) {
+    public ResponseEntity<VoteDTO> createVote(@RequestBody VoteDTO voteDTO) {
         try {
             return new ResponseEntity<>(voteService.createVote(voteDTO), HttpStatus.OK);
         } catch (Exception exception) {
+            exception.printStackTrace();
             return new ResponseEntity<>(null, HttpStatus.NOT_ACCEPTABLE);
         }
     }
@@ -32,24 +33,6 @@ public class VoteController {
         try {
             return new ResponseEntity<>(voteService.removeAllVotes(), HttpStatus.OK);
         } catch (Exception ex) {
-            return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
-        }
-    }
-
-    @GetMapping(value = "/getVoteByDeptNo")
-    public ResponseEntity<Boolean> getVoteByDeptNo(String deptNo) {
-        try {
-            return new ResponseEntity<>(voteService.getVoteByDeptNo(deptNo), HttpStatus.OK);
-        } catch (Exception exception) {
-            return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
-        }
-    }
-
-    @GetMapping(value = "/getAllVotes")
-    public ResponseEntity<List<Vote>> getAllVotes() {
-        try {
-            return new ResponseEntity<>(voteService.getAllVotes(), HttpStatus.OK);
-        } catch (Exception exception) {
             return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
         }
     }

@@ -7,5 +7,5 @@ import org.springframework.stereotype.Service;
 
 @Repository
 @Service
-public interface CandidateRepository extends JpaRepository<Candidate, Long> {
+public interface CandidateRepository extends JpaRepository<Candidate, String> {
 }

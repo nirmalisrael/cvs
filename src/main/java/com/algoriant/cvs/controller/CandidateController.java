@@ -28,10 +28,10 @@ public class CandidateController {
     }
 
     @DeleteMapping(value = "/removeCandidate")
-    public ResponseEntity<String> removeCandidate(@RequestParam Long lotNo) {
+    public ResponseEntity<String> removeCandidate(@RequestParam String candidateId) {
         try {
-            String response = String.valueOf(lotNo);
-            if (candidateService.removeCandidate(lotNo) == null)
+            String response = String.valueOf(candidateId);
+            if (candidateService.removeCandidate(candidateId) == null)
                 response += " NOT FOUND";
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception exception) {
@@ -40,16 +40,16 @@ public class CandidateController {
     }
 
     @GetMapping(value = "/getCandidateById")
-    public ResponseEntity<Candidate> getCandidateById(@RequestParam Long lotNo) {
+    public ResponseEntity<CandidateDTO> getCandidateById(@RequestParam String candidateId) {
         try {
-            return new ResponseEntity<>(candidateService.getCandidateById(lotNo), HttpStatus.OK);
+            return new ResponseEntity<>(candidateService.getCandidateById(candidateId), HttpStatus.OK);
         } catch (Exception exception) {
             return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
         }
     }
 
     @GetMapping(value = "/getAllCandidates")
-    public ResponseEntity<List<Candidate>> getAllCandidates() {
+    public ResponseEntity<List<CandidateDTO>> getAllCandidates() {
         try {
             return new ResponseEntity<>(candidateService.getAllCandidates(), HttpStatus.OK);
         } catch (Exception exception) {

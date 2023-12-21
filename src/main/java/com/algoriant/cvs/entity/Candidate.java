@@ -9,7 +9,7 @@ public class Candidate {
 
     @Id
     @NotNull
-    private Long lotNo;
+    private String candidateId;
 
     @NotNull
     private String candidateName;
@@ -22,12 +22,12 @@ public class Candidate {
     @JoinColumn(name = "dept_no")
     private Student student;
 
-    public Long getLotNo() {
-        return lotNo;
+    public String getCandidateId() {
+        return candidateId;
     }
 
-    public void setLotNo(Long lotNo) {
-        this.lotNo = lotNo;
+    public void setCandidateId(String candidateId) {
+        this.candidateId = candidateId;
     }
 
     public String getCandidateName() {

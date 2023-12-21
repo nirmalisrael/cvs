@@ -9,11 +9,7 @@ import java.util.List;
 @Service
 public interface VoteService {
 
-    Vote createVote(VoteDTO voteDTO);
+    VoteDTO createVote(VoteDTO voteDTO);
 
     String removeAllVotes();
-
-    Boolean getVoteByDeptNo(String deptNo);
-
-    List<Vote> getAllVotes();
 }
