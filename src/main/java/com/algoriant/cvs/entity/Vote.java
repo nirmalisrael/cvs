@@ -3,14 +3,13 @@ package com.algoriant.cvs.entity;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "vote_details")
 public class Vote {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "dept_no")
     private Student student;
 

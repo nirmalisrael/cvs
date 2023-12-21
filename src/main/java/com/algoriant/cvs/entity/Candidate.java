@@ -5,7 +5,6 @@ import com.sun.istack.NotNull;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "candidate_details")
 public class Candidate {
 
     @Id
@@ -19,8 +18,8 @@ public class Candidate {
     @JoinColumn(name = "election_name")
     private Election election;
 
-    @NotNull
     @ManyToOne
+    @JoinColumn(name = "dept_no")
     private Student student;
 
     public Long getLotNo() {

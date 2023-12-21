@@ -3,10 +3,7 @@ package com.algoriant.cvs.entity;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.sun.istack.NotNull;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
 
@@ -17,8 +14,15 @@ public class Election {
     @Id
     private String electionName;
 
-    @OneToMany(mappedBy = "election")
+    @ManyToOne
+    @JoinColumn(name = "deptNo")
+    private Student student;
+
+    @OneToMany(mappedBy = "election", cascade = CascadeType.ALL)
     private List<Candidate> candidates;
+
+    @OneToMany(mappedBy = "election", cascade = CascadeType.ALL)
+    private List<Vote> votes;
 
     @NotNull
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
