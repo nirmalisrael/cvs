@@ -3,6 +3,7 @@ package com.algoriant.cvs.entity;
 import com.sun.istack.NotNull;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 public class Candidate {
@@ -21,6 +22,9 @@ public class Candidate {
     @ManyToOne
     @JoinColumn(name = "dept_no")
     private Student student;
+
+    @OneToMany(mappedBy = "candidate", cascade = CascadeType.ALL)
+    private List<Vote> votes;
 
     public String getCandidateId() {
         return candidateId;
@@ -54,4 +58,11 @@ public class Candidate {
         this.student = student;
     }
 
+    public List<Vote> getVotes() {
+        return votes;
+    }
+
+    public void setVotes(List<Vote> votes) {
+        this.votes = votes;
+    }
 }

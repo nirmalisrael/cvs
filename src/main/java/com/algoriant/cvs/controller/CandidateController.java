@@ -48,6 +48,15 @@ public class CandidateController {
         }
     }
 
+    @GetMapping(value = "/getCandidatesByElectionName")
+    public ResponseEntity<List<CandidateDTO>> getCandidatesByElectionName(@RequestParam String electionName) {
+        try {
+            return new ResponseEntity<>(candidateService.getCandidatesByElectionName(electionName), HttpStatus.OK);
+        } catch (Exception exception) {
+            return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+        }
+    }
+
     @GetMapping(value = "/getAllCandidates")
     public ResponseEntity<List<CandidateDTO>> getAllCandidates() {
         try {

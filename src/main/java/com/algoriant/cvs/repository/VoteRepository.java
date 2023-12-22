@@ -24,9 +24,4 @@ public interface VoteRepository extends JpaRepository<Vote, Long> {
     boolean hasStudentVotedForElection(@Param("student") Student student, @Param("election") Election election);
 
     List<Vote> findByElectionElectionNameAndCandidateCandidateId(String electionName, String candidateId);
-
-//    @Query("SELECT v FROM Vote v " +
-//            "WHERE v.election.name = :electionName AND v.candidate.id = :candidateId")
-//    List<Vote> findVotesByElectionNameAndCandidateId(@Param("electionName") String electionName,
-//                                                     @Param("candidateId") Long candidateId);
 }

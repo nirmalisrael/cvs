@@ -12,11 +12,14 @@ public class CandidateDTO {
 
     private String deptNo;
 
+    private int voteCount;
+
     public CandidateDTO(Candidate candidate) {
         this.candidateId = candidate.getCandidateId();
         this.candidateName = candidate.getCandidateName();
         this.electionName = candidate.getElection().getElectionName();
         this.deptNo = candidate.getStudent().getDeptNo();
+        this.voteCount = candidate.getVotes().size();
     }
 
     public CandidateDTO() {
@@ -52,5 +55,13 @@ public class CandidateDTO {
 
     public void setDeptNo(String deptNo) {
         this.deptNo = deptNo;
+    }
+
+    public int getVoteCount() {
+        return voteCount;
+    }
+
+    public void setVoteCount(int voteCount) {
+        this.voteCount = voteCount;
     }
 }

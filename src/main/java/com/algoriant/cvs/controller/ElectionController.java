@@ -41,7 +41,8 @@ public class ElectionController {
     @GetMapping(value = "/getElectionById")
     public ResponseEntity<Election> getElectionById(String electionName) {
         try {
-            return new ResponseEntity<>(electionService.getElectionById(electionName), HttpStatus.OK);
+            Election election = electionService.getElectionById(electionName);
+            return new ResponseEntity<>(election, HttpStatus.OK);
         } catch (Exception exception) {
             return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
         }
@@ -50,8 +51,7 @@ public class ElectionController {
     @GetMapping(value = "/getAllElections")
     public ResponseEntity<List<Election>> getAllElections() {
         try {
-            List<Election> elections = electionService.getAllElections();
-            return new ResponseEntity<>(elections, HttpStatus.OK);
+            return new ResponseEntity<>(electionService.getAllElections(), HttpStatus.OK);
         } catch (Exception exception) {
             return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
         }

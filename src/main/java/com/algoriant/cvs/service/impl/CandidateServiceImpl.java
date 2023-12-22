@@ -61,10 +61,20 @@ public class CandidateServiceImpl implements CandidateService {
     }
 
     @Override
+    public List<CandidateDTO> getCandidatesByElectionName(String electionName) {
+        List<Candidate> candidates = candidateRepository.findCandidatesByElectionIdOrderByVoteCountDesc(electionName);
+        List<CandidateDTO> candidateDTOS = new ArrayList<>();
+        for (Candidate candidate : candidates) {
+            candidateDTOS.add(new CandidateDTO(candidate));
+        }
+        return candidateDTOS;
+    }
+
+    @Override
     public List<CandidateDTO> getAllCandidates() {
         List<Candidate> candidates = candidateRepository.findAll();
         List<CandidateDTO> candidateDTOS = new ArrayList<>();
-        for (Candidate candidate: candidates) {
+        for (Candidate candidate : candidates) {
             candidateDTOS.add(new CandidateDTO(candidate));
         }
         return candidateDTOS;

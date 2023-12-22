@@ -15,5 +15,7 @@ public interface CandidateService {
 
     CandidateDTO getCandidateById(String candidateId);
 
+    List<CandidateDTO> getCandidatesByElectionName(String electionName);
+
     List<CandidateDTO> getAllCandidates();
 }
