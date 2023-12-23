@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -22,6 +23,7 @@ public class StudentController {
     StudentService studentService;
 
     @PostMapping(value = "/createStudent")
+    @PreAuthorize("hasAuthority('admin')")
     public ResponseEntity<Student> createStudent(@RequestBody StudentRequest studentRequest) {
         try {
             return new ResponseEntity<>(studentService.createStudent(studentRequest), HttpStatus.OK);
@@ -31,6 +33,7 @@ public class StudentController {
     }
 
     @PutMapping(value = "/modifyStudent")
+    @PreAuthorize("hasAuthority('admin')")
     public ResponseEntity<StudentResponse> modifyStudent(@RequestParam String deptNo,
                                                          @RequestBody StudentRequest studentRequest) {
         try {
@@ -41,6 +44,7 @@ public class StudentController {
     }
 
     @DeleteMapping("/removeStudent")
+    @PreAuthorize("hasAuthority('admin')")
     public ResponseEntity<String> removeStudent(@RequestParam String deptNo) {
         try {
             return new ResponseEntity<>(studentService.removeStudent(deptNo), HttpStatus.OK);
@@ -50,6 +54,7 @@ public class StudentController {
     }
 
     @GetMapping(value = "/getStudentById")
+    @PreAuthorize("hasAnyAuthority('admin', 'user')")
     public ResponseEntity<StudentResponse> getStudentById(String deptNo) {
         try {
             return new ResponseEntity<>(studentService.getStudentById(deptNo), HttpStatus.OK);
@@ -59,6 +64,7 @@ public class StudentController {
     }
 
     @GetMapping(value = "/getAllStudents")
+    @PreAuthorize("hasAuthority('admin')")
     public ResponseEntity<List<StudentResponse>> getAllStudents() {
         try {
             return new ResponseEntity<>(studentService.getAllStudents(), HttpStatus.OK);

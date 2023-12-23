@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,6 +19,7 @@ public class UserController {
     UserServiceImpl userService;
 
     @PostMapping(value = "/createUser")
+    @PreAuthorize("hasAuthority('admin')")
     public ResponseEntity<User> createUser(@RequestBody User user) {
         try {
             return new ResponseEntity<>(userService.createUser(user), HttpStatus.OK);
@@ -27,6 +29,7 @@ public class UserController {
     }
 
     @DeleteMapping(value = "/removeUser")
+    @PreAuthorize("hasAuthority('admin')")
     public ResponseEntity<String> removeUser(String username) {
         try {
             if (userService.removeUser(username) == null) {
@@ -39,6 +42,7 @@ public class UserController {
     }
 
     @GetMapping(value = "/getAll")
+    @PreAuthorize("hasAuthority('admin')")
     public ResponseEntity<List<User>> getAllUsers() {
         try {
             return new ResponseEntity<>(userService.getAllUsers(), HttpStatus.OK);

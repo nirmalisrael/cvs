@@ -21,14 +21,32 @@ public class SwaggerConfig {
     @Bean
     public Docket getApi() {
         return new Docket(DocumentationType.SWAGGER_2)
-                .select()
-                .apis(RequestHandlerSelectors.basePackage("com.algoriant.cvs"))
-                .paths(PathSelectors.ant("/cvs/*"))
-                .build()
                 .apiInfo(new ApiInfo("CVS API", "College Voting Management System",
                         "1.0", "www.algoriant.com",
-                        new Contact("Algoriant", "http://www.algoriant.com", "info@algoriant.com"),
-                        "opensource", "http://www.algoriant.com",
-                        Collections.emptyList()));
+                        new Contact("name", "url", "info@coderulagam.com"),
+                        "opensource", "http://coderulagam.com/lidense",
+                        Collections.emptyList()))
+                .securityContexts(Arrays.asList(securityContext()))
+                .securitySchemes(Arrays.asList(apiKey()))
+                .select()
+                .apis(RequestHandlerSelectors.basePackage("com.algoriant.cvs"))
+                .paths(PathSelectors.any())
+                .build()
+                ;
+    }
+
+    private ApiKey apiKey() {
+        return new ApiKey("JWT", "Authorization", "header");
+    }
+
+    private SecurityContext securityContext() {
+        return SecurityContext.builder().securityReferences(defaultAuth()).build();
+    }
+
+    private List<SecurityReference> defaultAuth() {
+        AuthorizationScope authorizationScope = new AuthorizationScope("global", "accessEverything");
+        AuthorizationScope[] authorizationScopes = new AuthorizationScope[1];
+        authorizationScopes[0] = authorizationScope;
+        return Arrays.asList(new SecurityReference("JWT", authorizationScopes));
     }
 }
