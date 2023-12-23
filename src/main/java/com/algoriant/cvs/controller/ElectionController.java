@@ -2,7 +2,7 @@ package com.algoriant.cvs.controller;
 
 import com.algoriant.cvs.dto.ElectionDTO;
 import com.algoriant.cvs.entity.Election;
-import com.algoriant.cvs.service.impl.ElectionServiceImpl;
+import com.algoriant.cvs.service.ElectionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -16,7 +16,7 @@ import java.util.List;
 public class ElectionController {
 
     @Autowired
-    ElectionServiceImpl electionService;
+    ElectionService electionService;
 
     @PostMapping(value = "/createElection")
     public ResponseEntity<Election> createElection(@RequestBody ElectionDTO electionDTO) {
@@ -41,8 +41,7 @@ public class ElectionController {
     @GetMapping(value = "/getElectionById")
     public ResponseEntity<Election> getElectionById(String electionName) {
         try {
-            Election election = electionService.getElectionById(electionName);
-            return new ResponseEntity<>(election, HttpStatus.OK);
+            return new ResponseEntity<>(electionService.getElectionById(electionName), HttpStatus.OK);
         } catch (Exception exception) {
             return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
         }

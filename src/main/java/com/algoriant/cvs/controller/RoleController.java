@@ -1,6 +1,7 @@
 package com.algoriant.cvs.controller;
 
 import com.algoriant.cvs.entity.Role;
+import com.algoriant.cvs.service.RoleService;
 import com.algoriant.cvs.service.impl.RoleServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,7 +16,7 @@ import java.util.List;
 public class RoleController {
 
     @Autowired
-    private RoleServiceImpl roleService;
+    private RoleService roleService;
 
     @PostMapping(value = "/createRole")
     public ResponseEntity<Role> createRole(@RequestBody Role role) {

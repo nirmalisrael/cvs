@@ -3,6 +3,7 @@ package com.algoriant.cvs.controller;
 import com.algoriant.cvs.dto.StudentRequest;
 import com.algoriant.cvs.dto.StudentResponse;
 import com.algoriant.cvs.entity.Student;
+import com.algoriant.cvs.service.StudentService;
 import com.algoriant.cvs.service.impl.StudentServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,21 +19,20 @@ import java.util.List;
 public class StudentController {
 
     @Autowired
-    StudentServiceImpl studentService;
+    StudentService studentService;
 
     @PostMapping(value = "/createStudent")
     public ResponseEntity<Student> createStudent(@RequestBody StudentRequest studentRequest) {
         try {
             return new ResponseEntity<>(studentService.createStudent(studentRequest), HttpStatus.OK);
         } catch (Exception ex) {
-            ex.printStackTrace();
             return new ResponseEntity<>(null, HttpStatus.NOT_ACCEPTABLE);
         }
     }
 
     @PutMapping(value = "/modifyStudent")
     public ResponseEntity<StudentResponse> modifyStudent(@RequestParam String deptNo,
-                                                 @RequestBody StudentRequest studentRequest) {
+                                                         @RequestBody StudentRequest studentRequest) {
         try {
             return new ResponseEntity<>(studentService.modifyStudent(deptNo, studentRequest), HttpStatus.OK);
         } catch (Exception ex) {
@@ -61,8 +61,7 @@ public class StudentController {
     @GetMapping(value = "/getAllStudents")
     public ResponseEntity<List<StudentResponse>> getAllStudents() {
         try {
-            List<StudentResponse> students = studentService.getAllStudents();
-            return new ResponseEntity<>(students, HttpStatus.OK);
+            return new ResponseEntity<>(studentService.getAllStudents(), HttpStatus.OK);
         } catch (Exception ex) {
             return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
         }

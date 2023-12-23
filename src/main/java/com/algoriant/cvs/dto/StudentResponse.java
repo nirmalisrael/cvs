@@ -47,7 +47,7 @@ public class StudentResponse {
         this.phoneNumber = student.getPhoneNumber();
         this.address = student.getAddress();
         List<VoteDTO> voteDTOList = new ArrayList<>();
-        for (Vote vote: student.getVotes()) {
+        for (Vote vote : student.getVotes()) {
             voteDTOList.add(new VoteDTO(vote));
         }
         this.voteDTOS = voteDTOList;

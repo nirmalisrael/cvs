@@ -11,7 +11,8 @@ public class VoteDTO {
 
     private String electionName;
 
-    public VoteDTO(){}
+    public VoteDTO() {
+    }
 
     public VoteDTO(Vote vote) {
         this.candidateId = vote.getCandidate().getCandidateId();

@@ -19,7 +19,7 @@ Department {
 
     PHYSICAL_EDUCATION("PE");
 
-    private String code;
+    private final String code;
 
     private Department(String code) {
         this.code = code;

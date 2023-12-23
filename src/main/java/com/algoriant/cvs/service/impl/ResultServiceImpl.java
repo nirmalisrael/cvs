@@ -20,7 +20,7 @@ public class ResultServiceImpl implements ResultService {
     public List<VoteDTO> getVotesByElectionNameAndCandidateId(String electionName, String candidateId) {
         List<Vote> votes = voteRepository.findByElectionElectionNameAndCandidateCandidateId(electionName, candidateId);
         List<VoteDTO> voteDTOS = new ArrayList<>();
-        for (Vote vote: votes) {
+        for (Vote vote : votes) {
             voteDTOS.add(new VoteDTO(vote));
         }
         return voteDTOS;
@@ -30,7 +30,7 @@ public class ResultServiceImpl implements ResultService {
     public List<VoteDTO> getAllVotes() {
         List<Vote> votes = voteRepository.findAll();
         List<VoteDTO> voteDTOS = new ArrayList<>();
-        for (Vote vote: votes) {
+        for (Vote vote : votes) {
             voteDTOS.add(new VoteDTO(vote));
         }
         return voteDTOS;

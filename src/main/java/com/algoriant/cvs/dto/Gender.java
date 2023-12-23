@@ -8,10 +8,10 @@ public enum Gender {
 
     TRANSGENDER("TG");
 
-    private String code;
+    private final String code;
 
     Gender(String code) {
-         this.code = code;
+        this.code = code;
     }
 
     public String getCode() {

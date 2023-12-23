@@ -6,7 +6,8 @@ public enum DegreeType {
 
     PG("P");
 
-    private String code;
+    private final String code;
+
     private DegreeType(String code) {
         this.code = code;
     }

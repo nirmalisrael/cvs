@@ -25,10 +25,10 @@ public class SwaggerConfig {
                 .apis(RequestHandlerSelectors.basePackage("com.algoriant.cvs"))
                 .paths(PathSelectors.ant("/cvs/*"))
                 .build()
-                .apiInfo(new ApiInfo("CVS API","College Voting Management System",
-                        "1.0","www.algoriant.com",
-                        new Contact("Algoriant","http://www.algoriant.com","info@algoriant.com"),
-                        "opensource","http://www.algoriant.com",
+                .apiInfo(new ApiInfo("CVS API", "College Voting Management System",
+                        "1.0", "www.algoriant.com",
+                        new Contact("Algoriant", "http://www.algoriant.com", "info@algoriant.com"),
+                        "opensource", "http://www.algoriant.com",
                         Collections.emptyList()));
     }
 }

@@ -2,7 +2,7 @@ package com.algoriant.cvs.controller;
 
 import com.algoriant.cvs.dto.CandidateDTO;
 import com.algoriant.cvs.entity.Candidate;
-import com.algoriant.cvs.service.impl.CandidateServiceImpl;
+import com.algoriant.cvs.service.CandidateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -16,7 +16,7 @@ import java.util.List;
 public class CandidateController {
 
     @Autowired
-    CandidateServiceImpl candidateService;
+    CandidateService candidateService;
 
     @PostMapping(value = "/createCandidate")
     public ResponseEntity<Candidate> createCandidate(@RequestBody CandidateDTO candidateDTO) {

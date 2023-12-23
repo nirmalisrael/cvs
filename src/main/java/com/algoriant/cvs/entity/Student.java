@@ -51,7 +51,8 @@ public class Student {
     @OneToMany(mappedBy = "student")
     private List<Vote> votes;
 
-    public Student() { }
+    public Student() {
+    }
 
     public Student(StudentRequest studentRequest) {
         if (studentRequest.getStudentName() != null)

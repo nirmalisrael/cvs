@@ -29,7 +29,7 @@ public class UserServiceImpl {
 
     public String removeUser(String username) {
         Optional<User> optionalUser = userRepository.findById(username);
-        if (optionalUser.isPresent()){
+        if (optionalUser.isPresent()) {
             userRepository.deleteById(username);
             return username;
         }

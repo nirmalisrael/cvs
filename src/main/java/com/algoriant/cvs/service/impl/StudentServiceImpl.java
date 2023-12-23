@@ -38,8 +38,8 @@ public class StudentServiceImpl implements StudentService {
                     + student.getDegreeType().getCode()
                     + student.getDepartment().getCode();
 
-            String lastStudentId = studentRepository.findLastStudentDeptNoByDepartmentAndDegreeType(student.getDepartment(),
-                    student.getDegreeType());
+            String lastStudentId = studentRepository.findLastStudentDeptNoByDepartmentAndDegreeType(
+                    student.getDepartment(), student.getDegreeType());
 
             String newDeptNo;
 
@@ -76,9 +76,9 @@ public class StudentServiceImpl implements StudentService {
     public StudentResponse modifyStudent(String deptNo, StudentRequest studentRequest) {
         Optional<Student> optionalStudent = studentRepository.findById(deptNo);
         if (optionalStudent.isPresent()) {
-             Student student = new Student(studentRequest);
-             student.setDeptNo(optionalStudent.get().getDeptNo());
-             return new StudentResponse(studentRepository.save(student));
+            Student student = new Student(studentRequest);
+            student.setDeptNo(optionalStudent.get().getDeptNo());
+            return new StudentResponse(studentRepository.save(student));
         } else {
             return null;
         }
@@ -98,15 +98,15 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public StudentResponse getStudentById(String deptNo) {
         Optional<Student> optionalStudent = studentRepository.findById(deptNo);
-        return new StudentResponse(optionalStudent.get());
+        return new StudentResponse(optionalStudent.orElseThrow(null));
     }
 
     @Override
     public List<StudentResponse> getAllStudents() {
         List<Student> students = new ArrayList<>(studentRepository.findAll());
         List<StudentResponse> studentResponses = new ArrayList<>();
-        for (Student student: students) {
-                studentResponses.add(new StudentResponse(student));
+        for (Student student : students) {
+            studentResponses.add(new StudentResponse(student));
         }
         return studentResponses;
     }
