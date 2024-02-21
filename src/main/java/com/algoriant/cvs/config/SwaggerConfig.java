@@ -23,8 +23,8 @@ public class SwaggerConfig {
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(new ApiInfo("CVS API", "College Voting Management System",
                         "1.0", "www.algoriant.com",
-                        new Contact("name", "url", "info@coderulagam.com"),
-                        "opensource", "http://coderulagam.com/lidense",
+                        new Contact("name", "url", "info@algoriant.com"),
+                        "opensource", "www.algoriant.com",
                         Collections.emptyList()))
                 .securityContexts(Arrays.asList(securityContext()))
                 .securitySchemes(Arrays.asList(apiKey()))

@@ -48,6 +48,9 @@ public class Student {
     @NotNull
     private String address;
 
+    @OneToOne(mappedBy = "student")
+    private StudentImage studentImage;
+
     @OneToMany(mappedBy = "student")
     private List<Vote> votes;
 
@@ -161,5 +164,13 @@ public class Student {
 
     public void setVotes(List<Vote> votes) {
         this.votes = votes;
+    }
+
+    public StudentImage getStudentImage() {
+        return studentImage;
+    }
+
+    public void setStudentImage(StudentImage studentImage) {
+        this.studentImage = studentImage;
     }
 }

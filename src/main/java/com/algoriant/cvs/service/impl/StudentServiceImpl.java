@@ -7,6 +7,7 @@ import com.algoriant.cvs.entity.Student;
 import com.algoriant.cvs.entity.User;
 import com.algoriant.cvs.repository.StudentRepository;
 import com.algoriant.cvs.repository.UserRepository;
+import com.algoriant.cvs.service.StudentImageService;
 import com.algoriant.cvs.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -29,6 +30,10 @@ public class StudentServiceImpl implements StudentService {
     @Autowired
     PasswordEncoder passwordEncoder;
 
+    @Autowired
+
+    private StudentImageService imageService;
+
     @Override
     public Student createStudent(StudentRequest studentRequest) {
         try {
@@ -50,6 +55,7 @@ public class StudentServiceImpl implements StudentService {
                 newDeptNo = prefixDeptNo + String.format("%02d", ++lastNum);
             }
             student.setDeptNo(newDeptNo);
+//            student.setStudentImage(imageService.uploadStudentImage(student));
             studentRepository.save(student);
 
             User user = new User();
