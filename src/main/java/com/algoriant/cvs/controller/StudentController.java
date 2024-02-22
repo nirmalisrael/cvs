@@ -4,7 +4,9 @@ import com.algoriant.cvs.dto.StudentRequest;
 import com.algoriant.cvs.dto.StudentResponse;
 import com.algoriant.cvs.entity.Student;
 import com.algoriant.cvs.service.StudentService;
-import com.algoriant.cvs.service.impl.StudentServiceImpl;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -23,14 +25,21 @@ public class StudentController {
     StudentService studentService;
 
     @PostMapping(value = "/createStudent")
+    @ApiOperation(value = "Create a student with an image", consumes = "multipart/form-data")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "studentImage", value = "The image file to upload", required = true, dataType = "file", paramType = "form")
+    })
     @PreAuthorize("hasAuthority('admin')")
-    public ResponseEntity<Student> createStudent(@RequestBody StudentRequest studentRequest) {
+    public ResponseEntity<Student> createStudent(
+            @RequestPart("studentImage") MultipartFile studentImage,
+            @RequestPart("studentRequest") StudentRequest studentRequest) {
         try {
-            return new ResponseEntity<>(studentService.createStudent(studentRequest), HttpStatus.OK);
+            return new ResponseEntity<>(studentService.createStudent(studentRequest, studentImage), HttpStatus.OK);
         } catch (Exception ex) {
             return new ResponseEntity<>(null, HttpStatus.NOT_ACCEPTABLE);
         }
     }
+
 
     @PutMapping(value = "/modifyStudent")
     @PreAuthorize("hasAuthority('admin')")

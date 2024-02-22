@@ -33,6 +33,8 @@ public class StudentResponse {
 
     private String address;
 
+    private StudentImageDTO studentImageDTO;
+
     private List<VoteDTO> voteDTOS;
 
     public StudentResponse(Student student) {
@@ -46,6 +48,7 @@ public class StudentResponse {
         this.emailId = student.getEmailId();
         this.phoneNumber = student.getPhoneNumber();
         this.address = student.getAddress();
+        this.studentImageDTO = new StudentImageDTO(student.getStudentImage());
         List<VoteDTO> voteDTOList = new ArrayList<>();
         for (Vote vote : student.getVotes()) {
             voteDTOList.add(new VoteDTO(vote));
@@ -139,5 +142,13 @@ public class StudentResponse {
 
     public void setVoteDTOS(List<VoteDTO> voteDTOS) {
         this.voteDTOS = voteDTOS;
+    }
+
+    public StudentImageDTO getStudentImageDTO() {
+        return studentImageDTO;
+    }
+
+    public void setStudentImageDTO(StudentImageDTO studentImageDTO) {
+        this.studentImageDTO = studentImageDTO;
     }
 }

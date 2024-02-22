@@ -48,7 +48,8 @@ public class Student {
     @NotNull
     private String address;
 
-    @OneToOne(mappedBy = "student")
+    @OneToOne
+    @JoinColumn(name = "filename")
     private StudentImage studentImage;
 
     @OneToMany(mappedBy = "student")

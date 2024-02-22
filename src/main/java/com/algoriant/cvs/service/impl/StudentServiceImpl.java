@@ -4,14 +4,17 @@ import com.algoriant.cvs.dto.StudentRequest;
 import com.algoriant.cvs.dto.StudentResponse;
 import com.algoriant.cvs.entity.Role;
 import com.algoriant.cvs.entity.Student;
+import com.algoriant.cvs.entity.StudentImage;
 import com.algoriant.cvs.entity.User;
 import com.algoriant.cvs.repository.StudentRepository;
 import com.algoriant.cvs.repository.UserRepository;
 import com.algoriant.cvs.service.StudentImageService;
 import com.algoriant.cvs.service.StudentService;
+import com.algoriant.cvs.util.StudentImageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 
 import java.text.DateFormat;
@@ -31,11 +34,10 @@ public class StudentServiceImpl implements StudentService {
     PasswordEncoder passwordEncoder;
 
     @Autowired
-
     private StudentImageService imageService;
 
     @Override
-    public Student createStudent(StudentRequest studentRequest) {
+    public Student createStudent(StudentRequest studentRequest, MultipartFile multipartFile) {
         try {
             Student student = new Student(studentRequest);
 
@@ -55,12 +57,16 @@ public class StudentServiceImpl implements StudentService {
                 newDeptNo = prefixDeptNo + String.format("%02d", ++lastNum);
             }
             student.setDeptNo(newDeptNo);
-//            student.setStudentImage(imageService.uploadStudentImage(student));
+            StudentImage studentImage = new StudentImage();
+            studentImage.setFilename(student.getDeptNo());
+            studentImage.setFileType(multipartFile.getContentType());
+            studentImage.setFileData(StudentImageUtil.compressImage(multipartFile.getBytes()));
+            student.setStudentImage(imageService.uploadStudentImage(studentImage));
+
             studentRepository.save(student);
 
             User user = new User();
             user.setUsername(student.getDeptNo());
-            System.out.println(student.getDateOfBirth());
             DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
             user.setPassword(passwordEncoder.encode(formatter.format(student.getDateOfBirth())));
 

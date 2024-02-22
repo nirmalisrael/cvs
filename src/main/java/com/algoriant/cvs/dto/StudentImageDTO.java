@@ -1,19 +1,20 @@
-package com.algoriant.cvs.entity;
+package com.algoriant.cvs.dto;
 
-import javax.persistence.*;
+import com.algoriant.cvs.entity.StudentImage;
 
-@Entity
-@Table(name = "student_images")
-public class StudentImage {
+public class StudentImageDTO {
 
-    @Id
     private String filename;
 
     private String fileType;
 
-    @Lob
-    @Column(length = 1000)
     private byte[] fileData;
+
+    public StudentImageDTO(StudentImage studentImage) {
+        setFilename(studentImage.getFilename());
+        setFileType(studentImage.getFileType());
+        setFileData(studentImage.getFileData());
+    }
 
     public String getFilename() {
         return filename;
