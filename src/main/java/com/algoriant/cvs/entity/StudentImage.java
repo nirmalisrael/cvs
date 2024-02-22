@@ -9,8 +9,9 @@ public class StudentImage {
     @Id
     private String filename;
 
-    @OneToOne
-    @JoinColumn(name = "deptNo")
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "dept_no")
     private Student student;
 
     private String fileType;
@@ -41,5 +42,13 @@ public class StudentImage {
 
     public void setFileData(byte[] fileData) {
         this.fileData = fileData;
+    }
+
+    public Student getStudent() {
+        return student;
+    }
+
+    public void setStudent(Student student) {
+        this.student = student;
     }
 }

@@ -1,10 +1,15 @@
 package com.algoriant.cvs.service.impl;
 
+import com.algoriant.cvs.dto.StudentImageDTO;
+import com.algoriant.cvs.entity.Student;
 import com.algoriant.cvs.entity.StudentImage;
 import com.algoriant.cvs.repository.StudentImageRepository;
+import com.algoriant.cvs.repository.StudentRepository;
 import com.algoriant.cvs.service.StudentImageService;
+import com.algoriant.cvs.util.StudentImageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Optional;
 
@@ -14,9 +19,25 @@ public class StudentImageServiceImpl implements StudentImageService {
     @Autowired
     private StudentImageRepository imageRepository;
 
+    @Autowired
+    private StudentRepository studentRepository;
+
     @Override
-    public StudentImage uploadStudentImage(StudentImage studentImage) {
-        return imageRepository.save(studentImage);
+    public StudentImageDTO uploadStudentImage(MultipartFile file, String deptNo) {
+        try {
+            Student student = studentRepository.findById(deptNo).orElseThrow(()
+                    -> new RuntimeException("Student not found"));
+
+            StudentImage studentImage = new StudentImage();
+            studentImage.setStudent(student);
+            studentImage.setFilename(student.getDeptNo());
+            studentImage.setFileType(file.getContentType());
+            studentImage.setFileData(StudentImageUtil.compressImage(file.getBytes()));
+
+            return new StudentImageDTO(imageRepository.save(studentImage));
+        } catch (Exception ex) {
+            throw new RuntimeException("Image Cannot upload ", ex);
+        }
     }
 
     @Override

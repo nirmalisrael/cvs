@@ -48,8 +48,7 @@ public class Student {
     @NotNull
     private String address;
 
-    @OneToOne
-    @JoinColumn(name = "filename")
+    @OneToOne(mappedBy = "student", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private StudentImage studentImage;
 
     @OneToMany(mappedBy = "student")

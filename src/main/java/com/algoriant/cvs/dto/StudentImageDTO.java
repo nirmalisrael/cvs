@@ -10,10 +10,13 @@ public class StudentImageDTO {
 
     private byte[] fileData;
 
+    private StudentResponse studentResponse;
+
     public StudentImageDTO(StudentImage studentImage) {
         setFilename(studentImage.getFilename());
         setFileType(studentImage.getFileType());
         setFileData(studentImage.getFileData());
+        setStudentResponse(new StudentResponse(studentImage.getStudent()));
     }
 
     public String getFilename() {
@@ -38,5 +41,13 @@ public class StudentImageDTO {
 
     public void setFileData(byte[] fileData) {
         this.fileData = fileData;
+    }
+
+    public StudentResponse getStudentResponse() {
+        return studentResponse;
+    }
+
+    public void setStudentResponse(StudentResponse studentResponse) {
+        this.studentResponse = studentResponse;
     }
 }

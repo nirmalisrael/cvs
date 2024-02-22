@@ -56,12 +56,6 @@ public class StudentServiceImpl implements StudentService {
                 newDeptNo = prefixDeptNo + String.format("%02d", ++lastNum);
             }
             student.setDeptNo(newDeptNo);
-//            StudentImage studentImage = new StudentImage();
-//            studentImage.setFilename(student.getDeptNo());
-//            studentImage.setFileType(multipartFile.getContentType());
-//            studentImage.setFileData(StudentImageUtil.compressImage(multipartFile.getBytes()));
-//            student.setStudentImage(imageService.uploadStudentImage(studentImage));
-
             studentRepository.save(student);
 
             User user = new User();

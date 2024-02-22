@@ -1,6 +1,7 @@
 package com.algoriant.cvs.controller;
 
 import com.algoriant.cvs.dto.StudentImageDTO;
+import com.algoriant.cvs.entity.Student;
 import com.algoriant.cvs.entity.StudentImage;
 import com.algoriant.cvs.service.StudentImageService;
 import com.algoriant.cvs.util.StudentImageUtil;
@@ -9,10 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 @RestController
@@ -24,16 +22,24 @@ public class StudentImageController {
 
     @PreAuthorize("hasAuthority('admin')")
     @PostMapping("/uploadStudentImage")
-    public ResponseEntity<StudentImageDTO> uploadStudentImage(@RequestParam MultipartFile file) {
+    public ResponseEntity<StudentImageDTO> uploadStudentImage(@RequestParam MultipartFile file, @RequestParam String deptNo) {
         try {
-            StudentImage studentImage = new StudentImage();
-            studentImage.setFilename("sample");
-            studentImage.setFileType(file.getContentType());
-            studentImage.setFileData(StudentImageUtil.compressImage(file.getBytes()));
-            studentImage = imageService.uploadStudentImage(studentImage);
-            return new ResponseEntity<>(new StudentImageDTO(studentImage), HttpStatus.OK);
+
+            return new ResponseEntity<>(imageService.uploadStudentImage(file, deptNo), HttpStatus.OK);
         } catch (Exception ex) {
             return new ResponseEntity<>(null, HttpStatus.NOT_ACCEPTABLE);
+        }
+    }
+
+    @GetMapping(value = "getImageByFilename")
+    @PreAuthorize("hasAuthority('admin')")
+    public ResponseEntity<StudentImageDTO> getImageByFilename(@RequestParam String deptNo) {
+        try {
+            StudentImage studentImage = imageService.getStudentImageByDeptNo(deptNo);
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(new StudentImageDTO(studentImage));
+        } catch (Exception ex) {
+            return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
         }
     }
 }
