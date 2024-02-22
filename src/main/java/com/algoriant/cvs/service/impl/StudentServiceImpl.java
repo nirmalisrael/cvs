@@ -14,7 +14,6 @@ import com.algoriant.cvs.util.StudentImageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 
 import java.text.DateFormat;
@@ -37,7 +36,7 @@ public class StudentServiceImpl implements StudentService {
     private StudentImageService imageService;
 
     @Override
-    public Student createStudent(StudentRequest studentRequest, MultipartFile multipartFile) {
+    public Student createStudent(StudentRequest studentRequest) {
         try {
             Student student = new Student(studentRequest);
 
@@ -57,11 +56,11 @@ public class StudentServiceImpl implements StudentService {
                 newDeptNo = prefixDeptNo + String.format("%02d", ++lastNum);
             }
             student.setDeptNo(newDeptNo);
-            StudentImage studentImage = new StudentImage();
-            studentImage.setFilename(student.getDeptNo());
-            studentImage.setFileType(multipartFile.getContentType());
-            studentImage.setFileData(StudentImageUtil.compressImage(multipartFile.getBytes()));
-            student.setStudentImage(imageService.uploadStudentImage(studentImage));
+//            StudentImage studentImage = new StudentImage();
+//            studentImage.setFilename(student.getDeptNo());
+//            studentImage.setFileType(multipartFile.getContentType());
+//            studentImage.setFileData(StudentImageUtil.compressImage(multipartFile.getBytes()));
+//            student.setStudentImage(imageService.uploadStudentImage(studentImage));
 
             studentRepository.save(student);
 

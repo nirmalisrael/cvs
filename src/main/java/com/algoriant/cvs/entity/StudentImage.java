@@ -9,6 +9,10 @@ public class StudentImage {
     @Id
     private String filename;
 
+    @OneToOne
+    @JoinColumn(name = "deptNo")
+    private Student student;
+
     private String fileType;
 
     @Lob
