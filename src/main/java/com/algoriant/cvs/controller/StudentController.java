@@ -4,17 +4,12 @@ import com.algoriant.cvs.dto.StudentRequest;
 import com.algoriant.cvs.dto.StudentResponse;
 import com.algoriant.cvs.entity.Student;
 import com.algoriant.cvs.service.StudentService;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -29,7 +24,7 @@ public class StudentController {
     @PreAuthorize("hasAuthority('admin')")
     public ResponseEntity<Student> createStudent(@RequestBody StudentRequest studentRequest) {
         try {
-            return new ResponseEntity<>(studentService.createStudent(studentRequest), HttpStatus.OK);
+            return new ResponseEntity<>(studentService.createStudent(studentRequest, null), HttpStatus.OK);
         } catch (Exception ex) {
             return new ResponseEntity<>(null, HttpStatus.NOT_ACCEPTABLE);
         }

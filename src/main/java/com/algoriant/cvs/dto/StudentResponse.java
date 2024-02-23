@@ -33,7 +33,7 @@ public class StudentResponse {
 
     private String address;
 
-    private StudentImageDTO studentImageDTO;
+    private byte[] profileImage;
 
     private List<VoteDTO> voteDTOS;
 
@@ -48,7 +48,7 @@ public class StudentResponse {
         this.emailId = student.getEmailId();
         this.phoneNumber = student.getPhoneNumber();
         this.address = student.getAddress();
-        this.studentImageDTO = new StudentImageDTO(student.getStudentImage());
+        this.profileImage = student.getProfileImage();
         List<VoteDTO> voteDTOList = new ArrayList<>();
         for (Vote vote : student.getVotes()) {
             voteDTOList.add(new VoteDTO(vote));
@@ -144,11 +144,11 @@ public class StudentResponse {
         this.voteDTOS = voteDTOS;
     }
 
-    public StudentImageDTO getStudentImageDTO() {
-        return studentImageDTO;
+    public byte[] getProfileImage() {
+        return profileImage;
     }
 
-    public void setStudentImageDTO(StudentImageDTO studentImageDTO) {
-        this.studentImageDTO = studentImageDTO;
+    public void setProfileImage(byte[] profileImage) {
+        this.profileImage = profileImage;
     }
 }

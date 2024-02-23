@@ -48,8 +48,7 @@ public class Student {
     @NotNull
     private String address;
 
-    @OneToOne(mappedBy = "student", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private StudentImage studentImage;
+    private byte[] profileImage;
 
     @OneToMany(mappedBy = "student")
     private List<Vote> votes;
@@ -166,11 +165,11 @@ public class Student {
         this.votes = votes;
     }
 
-    public StudentImage getStudentImage() {
-        return studentImage;
+    public byte[] getProfileImage() {
+        return profileImage;
     }
 
-    public void setStudentImage(StudentImage studentImage) {
-        this.studentImage = studentImage;
+    public void setProfileImage(byte[] profileImage) {
+        this.profileImage = profileImage;
     }
 }

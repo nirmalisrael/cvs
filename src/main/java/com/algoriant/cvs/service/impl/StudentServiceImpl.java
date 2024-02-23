@@ -4,16 +4,15 @@ import com.algoriant.cvs.dto.StudentRequest;
 import com.algoriant.cvs.dto.StudentResponse;
 import com.algoriant.cvs.entity.Role;
 import com.algoriant.cvs.entity.Student;
-import com.algoriant.cvs.entity.StudentImage;
 import com.algoriant.cvs.entity.User;
 import com.algoriant.cvs.repository.StudentRepository;
 import com.algoriant.cvs.repository.UserRepository;
 import com.algoriant.cvs.service.StudentImageService;
 import com.algoriant.cvs.service.StudentService;
-import com.algoriant.cvs.util.StudentImageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 
 import java.text.DateFormat;
@@ -36,7 +35,7 @@ public class StudentServiceImpl implements StudentService {
     private StudentImageService imageService;
 
     @Override
-    public Student createStudent(StudentRequest studentRequest) {
+    public Student createStudent(StudentRequest studentRequest, MultipartFile file) {
         try {
             Student student = new Student(studentRequest);
 
