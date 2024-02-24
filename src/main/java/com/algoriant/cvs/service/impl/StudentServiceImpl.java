@@ -7,7 +7,6 @@ import com.algoriant.cvs.entity.Student;
 import com.algoriant.cvs.entity.User;
 import com.algoriant.cvs.repository.StudentRepository;
 import com.algoriant.cvs.repository.UserRepository;
-import com.algoriant.cvs.service.StudentImageService;
 import com.algoriant.cvs.service.StudentService;
 import com.algoriant.cvs.util.StudentImageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -32,11 +32,8 @@ public class StudentServiceImpl implements StudentService {
     @Autowired
     PasswordEncoder passwordEncoder;
 
-    @Autowired
-    private StudentImageService imageService;
-
     @Override
-    public Student createStudent(StudentRequest studentRequest, MultipartFile file) {
+    public Student createStudent(StudentRequest studentRequest) {
         try {
             Student student = new Student(studentRequest);
 
@@ -56,7 +53,6 @@ public class StudentServiceImpl implements StudentService {
                 newDeptNo = prefixDeptNo + String.format("%02d", ++lastNum);
             }
             student.setDeptNo(newDeptNo);
-            student.setProfileImage(StudentImageUtil.compressImage(file.getBytes()));
             studentRepository.save(student);
 
             User user = new User();
@@ -115,5 +111,24 @@ public class StudentServiceImpl implements StudentService {
             studentResponses.add(new StudentResponse(student));
         }
         return studentResponses;
+    }
+
+    @Override
+    public byte[] uploadProfileImage(MultipartFile file, String deptNo) throws IOException {
+        Optional<Student> optionalStudent = studentRepository.findById(deptNo);
+        if (optionalStudent.isPresent()) {
+            Student student = optionalStudent.get();
+            student.setProfileImage(StudentImageUtil.compressImage(file.getBytes()));
+            studentRepository.save(student);
+            return StudentImageUtil.decompressImage(student.getProfileImage());
+        }
+        return new byte[0];
+    }
+
+    @Override
+    public byte[] getStudentImageByDeptNo(String deptNo) {
+        Optional<Student> optionalStudent = studentRepository.findById(deptNo);
+        return optionalStudent.map(student -> StudentImageUtil.decompressImage(student.getProfileImage())).orElseGet(()
+                -> new byte[0]);
     }
 }

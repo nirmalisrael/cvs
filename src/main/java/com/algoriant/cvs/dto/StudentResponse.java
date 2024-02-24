@@ -2,6 +2,7 @@ package com.algoriant.cvs.dto;
 
 import com.algoriant.cvs.entity.Student;
 import com.algoriant.cvs.entity.Vote;
+import com.algoriant.cvs.util.StudentImageUtil;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -38,17 +39,28 @@ public class StudentResponse {
     private List<VoteDTO> voteDTOS;
 
     public StudentResponse(Student student) {
-        this.deptNo = student.getDeptNo();
-        this.studentName = student.getStudentName();
-        this.dateOfBirth = student.getDateOfBirth();
-        this.gender = student.getGender();
-        this.admissionYear = student.getAdmissionYear();
-        this.degreeType = student.getDegreeType();
-        this.department = student.getDepartment();
-        this.emailId = student.getEmailId();
-        this.phoneNumber = student.getPhoneNumber();
-        this.address = student.getAddress();
-        this.profileImage = student.getProfileImage();
+        if (student.getDeptNo() != null)
+            this.deptNo = student.getDeptNo();
+        if (student.getStudentName() != null)
+            this.studentName = student.getStudentName();
+        if (student.getDateOfBirth() != null)
+            this.dateOfBirth = student.getDateOfBirth();
+        if (student.getGender() != null)
+            this.gender = student.getGender();
+        if (student.getAdmissionYear() != 0)
+            this.admissionYear = student.getAdmissionYear();
+        if (student.getDegreeType() != null)
+            this.degreeType = student.getDegreeType();
+        if (student.getDepartment() != null)
+            this.department = student.getDepartment();
+        if (student.getEmailId() != null)
+            this.emailId = student.getEmailId();
+        if (student.getPhoneNumber() != 0)
+            this.phoneNumber = student.getPhoneNumber();
+        if (student.getAddress() != null)
+            this.address = student.getAddress();
+        if (student.getProfileImage() != null)
+            this.profileImage = StudentImageUtil.decompressImage(student.getProfileImage());
         if (student.getVotes() != null) {
             List<VoteDTO> voteDTOList = new ArrayList<>();
             for (Vote vote : student.getVotes()) {
@@ -151,6 +163,6 @@ public class StudentResponse {
     }
 
     public void setProfileImage(byte[] profileImage) {
-        this.profileImage = profileImage;
+        this.profileImage = StudentImageUtil.decompressImage(profileImage);
     }
 }
