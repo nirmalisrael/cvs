@@ -49,11 +49,13 @@ public class StudentResponse {
         this.phoneNumber = student.getPhoneNumber();
         this.address = student.getAddress();
         this.profileImage = student.getProfileImage();
-        List<VoteDTO> voteDTOList = new ArrayList<>();
-        for (Vote vote : student.getVotes()) {
-            voteDTOList.add(new VoteDTO(vote));
+        if (student.getVotes() != null) {
+            List<VoteDTO> voteDTOList = new ArrayList<>();
+            for (Vote vote : student.getVotes()) {
+                voteDTOList.add(new VoteDTO(vote));
+            }
+            this.voteDTOS = voteDTOList;
         }
-        this.voteDTOS = voteDTOList;
     }
 
     public String getDeptNo() {

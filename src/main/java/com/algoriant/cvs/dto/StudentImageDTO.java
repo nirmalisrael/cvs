@@ -16,7 +16,9 @@ public class StudentImageDTO {
         setFilename(studentImage.getFilename());
         setFileType(studentImage.getFileType());
         setFileData(studentImage.getFileData());
-        setStudentResponse(new StudentResponse(studentImage.getStudent()));
+        if (studentImage.getStudent() != null)
+            setStudentResponse(new StudentResponse(studentImage.getStudent()));
+
     }
 
     public String getFilename() {

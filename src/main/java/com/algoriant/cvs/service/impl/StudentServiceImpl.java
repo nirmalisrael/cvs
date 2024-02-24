@@ -9,6 +9,7 @@ import com.algoriant.cvs.repository.StudentRepository;
 import com.algoriant.cvs.repository.UserRepository;
 import com.algoriant.cvs.service.StudentImageService;
 import com.algoriant.cvs.service.StudentService;
+import com.algoriant.cvs.util.StudentImageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -55,6 +56,7 @@ public class StudentServiceImpl implements StudentService {
                 newDeptNo = prefixDeptNo + String.format("%02d", ++lastNum);
             }
             student.setDeptNo(newDeptNo);
+            student.setProfileImage(StudentImageUtil.compressImage(file.getBytes()));
             studentRepository.save(student);
 
             User user = new User();

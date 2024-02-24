@@ -27,6 +27,7 @@ public class StudentImageController {
 
             return new ResponseEntity<>(imageService.uploadStudentImage(file, deptNo), HttpStatus.OK);
         } catch (Exception ex) {
+            ex.printStackTrace();
             return new ResponseEntity<>(null, HttpStatus.NOT_ACCEPTABLE);
         }
     }

@@ -28,13 +28,16 @@ public class StudentImageServiceImpl implements StudentImageService {
             Student student = studentRepository.findById(deptNo).orElseThrow(()
                     -> new RuntimeException("Student not found"));
 
-            StudentImage studentImage = new StudentImage();
-            studentImage.setStudent(student);
-            studentImage.setFilename(student.getDeptNo());
-            studentImage.setFileType(file.getContentType());
-            studentImage.setFileData(StudentImageUtil.compressImage(file.getBytes()));
 
-            return new StudentImageDTO(imageRepository.save(studentImage));
+            student.setProfileImage(StudentImageUtil.compressImage(file.getBytes()));
+            StudentImage studentImage = new StudentImage();
+//            studentImage.setStudent(student);
+//            studentImage.setFilename(file.getOriginalFilename());
+//            studentImage.setFileType(file.getContentType());
+//            studentImage.setFileData(StudentImageUtil.compressImage(file.getBytes()));
+
+//            imageRepository.save(studentImage);
+            return new StudentImageDTO(studentImage);
         } catch (Exception ex) {
             throw new RuntimeException("Image Cannot upload ", ex);
         }
