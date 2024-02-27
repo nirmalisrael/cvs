@@ -15,7 +15,7 @@ public class JwtUtil {
 
     private static final String SECRET_KEY = "we_are_algoriants";
 
-    private static final long EXPIRATION_TIME = 15 * 60 * 1000L; // 15 minutes
+    private static final long EXPIRATION_TIME = 30 * 60 * 1000L; // 30 minutes
 
     public String generateAccessToken(User user) {
         return Jwts.builder()
