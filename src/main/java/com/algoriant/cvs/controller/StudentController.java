@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping(value = "/cvs", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
@@ -46,11 +48,14 @@ public class StudentController {
 
     @DeleteMapping("/removeStudent")
     @PreAuthorize("hasAuthority('admin')")
-    public ResponseEntity<String> removeStudent(@RequestParam String deptNo) {
+    public ResponseEntity<Map<String, String>> removeStudent(@RequestParam String deptNo) {
+        Map<String, String> response = new HashMap<>();
         try {
-            return new ResponseEntity<>(studentService.removeStudent(deptNo), HttpStatus.OK);
-        } catch (Exception ex) {
-            return new ResponseEntity<>(studentService.removeStudent(deptNo), HttpStatus.NO_CONTENT);
+            response.put("message", studentService.removeStudent(deptNo));
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (Exception e) {
+            response.put("message", deptNo + " is not found");
+            return new ResponseEntity<>(response, HttpStatus.NO_CONTENT);
         }
     }
 
