@@ -41,7 +41,18 @@ public class UserController {
         }
     }
 
-    @GetMapping(value = "/getAll")
+    @GetMapping(value = "/getUserByUsername")
+    @PreAuthorize("hasAuthority('admin')")
+    public ResponseEntity<User> getUserByUsername(@RequestParam String username) {
+        try {
+            User user = (User) userService.loadUserByUsername(username);
+            return new ResponseEntity<>(user, HttpStatus.OK);
+        } catch (Exception exception) {
+            return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+        }
+    }
+
+    @GetMapping(value = "/getAllUsers")
     @PreAuthorize("hasAuthority('admin')")
     public ResponseEntity<List<User>> getAllUsers() {
         try {
