@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface ElectionService {
 
-    ElectionResponse createElection(String electionName);
+    ElectionResponse createElection(String electionName, LocalDateTime electionDateTime, int durationHours);
 
     String removeElection(String electionName);
 

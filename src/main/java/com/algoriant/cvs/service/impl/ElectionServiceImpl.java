@@ -21,11 +21,14 @@ public class ElectionServiceImpl implements ElectionService {
     ElectionRepository electionRepository;
 
     @Override
-    public ElectionResponse createElection(String electionName) {
+    public ElectionResponse createElection(String electionName, LocalDateTime electionDateTime, int durationHours) {
         Election election = new Election();
         election.setElectionName(electionName);
         election.setCreationTime(LocalDateTime.now());
-        election.setElectionStatus(ElectionStatus.UPCOMING);
+        election.setStartTime(electionDateTime);
+        election.setEndTime(electionDateTime.plusHours(durationHours));
+        election.setDurationHours(durationHours);
+        updateElectionStatus(election);
         return new ElectionResponse(electionRepository.save(election));
     }
 
@@ -49,6 +52,9 @@ public class ElectionServiceImpl implements ElectionService {
         List<ElectionResponse> electionResponses = new ArrayList<>();
         List<Election> elections = electionRepository.findAll();
         for (Election election: elections) {
+            if (election.getElectionStatus() != updateElectionStatus(election)) {
+                electionRepository.save(election);
+            }
             electionResponses.add(new ElectionResponse(election));
         }
         return electionResponses;
@@ -69,7 +75,7 @@ public class ElectionServiceImpl implements ElectionService {
         return null;
     }
 
-    private void updateElectionStatus(Election election) {
+    private ElectionStatus updateElectionStatus(Election election) {
         LocalDateTime currentTime = LocalDateTime.now();
         if (currentTime.isBefore(election.getStartTime())) {
             election.setElectionStatus(ElectionStatus.UPCOMING);
@@ -78,5 +84,6 @@ public class ElectionServiceImpl implements ElectionService {
         } else {
             election.setElectionStatus(ElectionStatus.COMPLETED);
         }
+        return election.getElectionStatus();
     }
 }

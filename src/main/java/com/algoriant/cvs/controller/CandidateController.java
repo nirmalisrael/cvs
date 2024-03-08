@@ -10,7 +10,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping(value = "/cvs", produces = {MediaType.APPLICATION_JSON_VALUE})
@@ -30,14 +32,17 @@ public class CandidateController {
     }
 
     @DeleteMapping(value = "/removeCandidate")
-    public ResponseEntity<String> removeCandidate(@RequestParam String candidateId) {
+    public ResponseEntity<Map<String, String>> removeCandidate(@RequestParam String candidateId) {
+        Map<String, String> response = new HashMap<>();
         try {
-            String response = String.valueOf(candidateId);
-            if (candidateService.removeCandidate(candidateId) == null)
-                response += " NOT FOUND";
+            String deleteResponse = candidateService.removeCandidate(candidateId);
+            if (deleteResponse == null)
+                response.put("message", candidateId + " NOT FOUND");
+            else
+                response.put("message", deleteResponse);
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception exception) {
-            return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>(response, HttpStatus.NO_CONTENT);
         }
     }
 

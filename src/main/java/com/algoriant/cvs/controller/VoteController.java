@@ -9,6 +9,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @RestController
 @RequestMapping(value = "/cvs", produces = {MediaType.APPLICATION_JSON_VALUE})
 public class VoteController {
@@ -28,11 +31,13 @@ public class VoteController {
 
     @DeleteMapping(value = "/removeAllVotes")
     @PreAuthorize("hasAuthority('admin')")
-    public ResponseEntity<String> removeAllVotes() {
+    public ResponseEntity<Map<String, String>> removeAllVotes() {
+        Map<String, String> response = new HashMap<>();
         try {
-            return new ResponseEntity<>(voteService.removeAllVotes(), HttpStatus.OK);
+            response.put("message", voteService.removeAllVotes());
+            return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception ex) {
-            return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>(response, HttpStatus.NO_CONTENT);
         }
     }
 }
