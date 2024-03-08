@@ -1,5 +1,7 @@
 package com.algoriant.cvs.controller;
 
+import com.algoriant.cvs.dto.DegreeType;
+import com.algoriant.cvs.dto.Department;
 import com.algoriant.cvs.dto.StudentRequest;
 import com.algoriant.cvs.dto.StudentResponse;
 import com.algoriant.cvs.entity.Student;
@@ -100,6 +102,30 @@ public class StudentController {
                     .body(studentService.getStudentImageByDeptNo(deptNo));
         } catch (Exception ex) {
             return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+        }
+    }
+
+    @PreAuthorize("hasAnyAuthority('admin','user')")
+    @GetMapping("/hasVoted")
+    public ResponseEntity<Map<String, String >> hasVoted(@RequestParam String deptNo,
+                                                         @RequestParam String electionName) {
+        try {
+            return new ResponseEntity<>(studentService.hasVoted(deptNo, electionName), HttpStatus.OK);
+        } catch (Exception ex) {
+            return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+        }
+    }
+
+    @PreAuthorize("hasAuthority('admin')")
+    @GetMapping("/getStudentsByFiler")
+    public ResponseEntity<List<StudentResponse>> getStudentsByFiler(@RequestParam String degreeType,
+                                                                    @RequestParam String department,
+                                                                    @RequestParam int admissionYear) {
+        try {
+            return new ResponseEntity<>(studentService.getStudentsByFiler(degreeType, department, admissionYear),
+                    HttpStatus.OK);
+        } catch (Exception ex) {
+            return new ResponseEntity<>(Collections.emptyList(), HttpStatus.NO_CONTENT);
         }
     }
 }

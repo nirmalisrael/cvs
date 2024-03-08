@@ -28,7 +28,7 @@ public class CandidateServiceImpl implements CandidateService {
     StudentRepository studentRepository;
 
     @Override
-    public Candidate createCandidate(CandidateDTO candidateDTO) {
+    public CandidateDTO createCandidate(CandidateDTO candidateDTO) {
         Student student = studentRepository.findById(candidateDTO.getDeptNo()).orElseThrow(()
                 -> new RuntimeException("Student not found"));
 
@@ -37,10 +37,21 @@ public class CandidateServiceImpl implements CandidateService {
         Candidate candidate = new Candidate();
 
         candidate.setCandidateId(candidateDTO.getCandidateId());
-        candidate.setCandidateName(candidateDTO.getCandidateName());
+        candidate.setCandidateName(student.getStudentName());
         candidate.setElection(election);
         candidate.setStudent(student);
-        return candidateRepository.save(candidate);
+        return new CandidateDTO(candidateRepository.save(candidate));
+    }
+
+    @Override
+    public List<CandidateDTO> createCandidates(List<CandidateDTO> candidateDTOS) {
+        List<CandidateDTO> candidateDTOResponse = new ArrayList<>();
+        for(CandidateDTO candidateDTO: candidateDTOS) {
+            if (candidateDTO != null) {
+                candidateDTOResponse.add(createCandidate(candidateDTO));
+            }
+        }
+        return candidateDTOResponse;
     }
 
     @Override

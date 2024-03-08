@@ -1,6 +1,7 @@
 package com.algoriant.cvs.controller;
 
 import com.algoriant.cvs.dto.ElectionResponse;
+import com.algoriant.cvs.dto.ElectionStatus;
 import com.algoriant.cvs.service.ElectionService;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -73,14 +75,24 @@ public class ElectionController {
 
     @PutMapping("/modifyElection")
     public ResponseEntity<ElectionResponse> modifyElection(@RequestParam String electionName,
-                                                          @RequestParam String startTime,
-                                                          @RequestParam int durationHours) {
+                                                           @RequestParam String startTime,
+                                                           @RequestParam int durationHours) {
         try {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
             LocalDateTime dateTime = LocalDateTime.parse(startTime, formatter);
             return new ResponseEntity<>(electionService.startElection(electionName, dateTime, durationHours), HttpStatus.OK);
         } catch (Exception exception) {
             return new ResponseEntity<>(null, HttpStatus.NOT_ACCEPTABLE);
+        }
+    }
+
+    @PreAuthorize("hasAnyAuthority('admin','user')")
+    @GetMapping("/getElectionsByElectionStatus")
+    public ResponseEntity<List<ElectionResponse>> getElectionsByElectionStatus(@RequestParam ElectionStatus electionStatus) {
+        try {
+            return new ResponseEntity<>(electionService.getElectionsByElectionStatus(electionStatus), HttpStatus.OK);
+        } catch (Exception ex) {
+            return new ResponseEntity<>(Collections.emptyList(), HttpStatus.NO_CONTENT);
         }
     }
 }

@@ -61,6 +61,21 @@ public class ElectionServiceImpl implements ElectionService {
     }
 
     @Override
+    public List<ElectionResponse> getElectionsByElectionStatus(ElectionStatus electionStatus) {
+        List<ElectionResponse> electionResponses = new ArrayList<>();
+        List<Election> elections = electionRepository.findByElectionStatus(electionStatus);
+        for (Election election: elections) {
+            if (election.getElectionStatus() != updateElectionStatus(election)) {
+                election = electionRepository.save(election);
+            }
+            if (election.getElectionStatus() == electionStatus) {
+                electionResponses.add(new ElectionResponse(election));
+            }
+        }
+        return electionResponses;
+    }
+
+    @Override
     public ElectionResponse startElection(String electionName, LocalDateTime startTime, int durationHours) {
         Optional<Election> optionalElection = electionRepository.findById(electionName);
 

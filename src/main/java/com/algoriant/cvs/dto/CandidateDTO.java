@@ -19,7 +19,9 @@ public class CandidateDTO {
         this.candidateName = candidate.getCandidateName();
         this.electionName = candidate.getElection().getElectionName();
         this.deptNo = candidate.getStudent().getDeptNo();
-        this.voteCount = candidate.getVotes().size();
+        if (candidate.getVotes() != null) {
+            voteCount = candidate.getVotes().size();
+        }
     }
 
     public CandidateDTO() {

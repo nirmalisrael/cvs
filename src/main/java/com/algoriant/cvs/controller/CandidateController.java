@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,11 +24,20 @@ public class CandidateController {
     CandidateService candidateService;
 
     @PostMapping(value = "/createCandidate")
-    public ResponseEntity<Candidate> createCandidate(@RequestBody CandidateDTO candidateDTO) {
+    public ResponseEntity<CandidateDTO> createCandidate(@RequestBody CandidateDTO candidateDTO) {
         try {
             return new ResponseEntity<>(candidateService.createCandidate(candidateDTO), HttpStatus.OK);
         } catch (Exception exception) {
             return new ResponseEntity<>(null, HttpStatus.NOT_ACCEPTABLE);
+        }
+    }
+
+    @PostMapping(value = "/createCandidates")
+    public ResponseEntity<List<CandidateDTO>> createCandidates(@RequestBody List<CandidateDTO> candidateDTOS) {
+        try {
+            return new ResponseEntity<>(candidateService.createCandidates(candidateDTOS), HttpStatus.OK);
+        } catch (Exception ex) {
+            return new ResponseEntity<>(Collections.emptyList(), HttpStatus.NOT_ACCEPTABLE);
         }
     }
 
@@ -56,6 +66,7 @@ public class CandidateController {
     }
 
     @GetMapping(value = "/getCandidatesByElectionName")
+    @PreAuthorize("hasAnyAuthority('admin','user')")
     public ResponseEntity<List<CandidateDTO>> getCandidatesByElectionName(@RequestParam String electionName) {
         try {
             return new ResponseEntity<>(candidateService.getCandidatesByElectionName(electionName), HttpStatus.OK);

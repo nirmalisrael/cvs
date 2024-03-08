@@ -1,10 +1,13 @@
 package com.algoriant.cvs.service.impl;
 
+import com.algoriant.cvs.dto.DegreeType;
+import com.algoriant.cvs.dto.Department;
 import com.algoriant.cvs.dto.StudentRequest;
 import com.algoriant.cvs.dto.StudentResponse;
 import com.algoriant.cvs.entity.Role;
 import com.algoriant.cvs.entity.Student;
 import com.algoriant.cvs.entity.User;
+import com.algoriant.cvs.entity.Vote;
 import com.algoriant.cvs.repository.StudentRepository;
 import com.algoriant.cvs.repository.UserRepository;
 import com.algoriant.cvs.service.StudentService;
@@ -19,6 +22,7 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class StudentServiceImpl implements StudentService {
@@ -130,5 +134,92 @@ public class StudentServiceImpl implements StudentService {
         Optional<Student> optionalStudent = studentRepository.findById(deptNo);
         return optionalStudent.map(student -> StudentImageUtil.decompressImage(student.getProfileImage())).orElseGet(()
                 -> new byte[0]);
+    }
+
+    @Override
+    public Map<String, String> hasVoted(String deptNo, String electionName) {
+        Optional<Student> optionalStudent = studentRepository.findById(deptNo);
+        boolean hasVoted = false;
+        String candidateId = null;
+        if (optionalStudent.isPresent()) {
+            List<Vote> votes = optionalStudent.get().getVotes();
+            for (Vote vote : votes) {
+                if (electionName.equals(vote.getElection().getElectionName())) {
+                    hasVoted = true;
+                    candidateId = vote.getCandidate().getCandidateId();
+                    break;
+                }
+            }
+        }
+        Map<String, String> response = new HashMap<>();
+        response.put("hasVoted", String.valueOf(hasVoted));
+        response.put("candidateId", candidateId);
+        return response;
+    }
+
+    @Override
+    public List<StudentResponse> getStudentsByFiler(String degreeType, String department, int admissionYear) {
+        List<Student> students = studentRepository.findAll();
+        List<StudentResponse> studentResponses = new ArrayList<>();
+        if (degreeType == null && department == null && admissionYear == 0) {
+            for (Student student : students) {
+                studentResponses.add(new StudentResponse(student));
+            }
+            return studentResponses;
+        } else if (!Objects.equals(degreeType, "null") && Objects.equals(department, "null") && admissionYear == 0) {
+            students = students.stream().filter(student -> student.getDegreeType().equals(DegreeType.valueOf(degreeType)))
+                    .collect(Collectors.toList());
+            for (Student student : students) {
+                studentResponses.add(new StudentResponse(student));
+            }
+            return studentResponses;
+        } else if (Objects.equals(degreeType, "null") && !Objects.equals(department, "null") && admissionYear == 0) {
+            students = students.stream().filter(student -> student.getDepartment().equals(Department.valueOf(department)))
+                    .collect(Collectors.toList());
+            for (Student student : students) {
+                studentResponses.add(new StudentResponse(student));
+            }
+            return studentResponses;
+        } else if (Objects.equals(degreeType, "null") && Objects.equals(department, "null") && admissionYear != 0) {
+            students = students.stream().filter(student -> student.getAdmissionYear() == admissionYear).collect(Collectors.toList());
+            for (Student student : students) {
+                studentResponses.add(new StudentResponse(student));
+            }
+            return studentResponses;
+        } else if (!Objects.equals(degreeType, "null") && !Objects.equals(department, "null") && admissionYear == 0) {
+            students = students.stream().filter(student -> student.getDegreeType().equals(DegreeType.valueOf(degreeType)))
+                    .filter(student -> student.getDepartment().equals(Department.valueOf(department)))
+                    .collect(Collectors.toList());
+            for (Student student : students) {
+                studentResponses.add(new StudentResponse(student));
+            }
+            return studentResponses;
+        } else if (!Objects.equals(degreeType, "null") && Objects.equals(department, "null") && admissionYear != 0) {
+            students = students.stream().filter(student -> student.getDegreeType().equals(DegreeType.valueOf(degreeType)))
+                    .filter(student -> student.getAdmissionYear() == admissionYear)
+                    .collect(Collectors.toList());
+            for (Student student : students) {
+                studentResponses.add(new StudentResponse(student));
+            }
+            return studentResponses;
+        } else if (Objects.equals(degreeType, "null") && !Objects.equals(department, "null") && admissionYear != 0) {
+            students = students.stream().filter(student -> student.getDepartment().equals(Department.valueOf(department)))
+                    .filter(student -> student.getAdmissionYear() == admissionYear)
+                    .collect(Collectors.toList());
+            for (Student student : students) {
+                studentResponses.add(new StudentResponse(student));
+            }
+            return studentResponses;
+        } else if (!Objects.equals(degreeType, "null") && !Objects.equals(department, "null") && admissionYear != 0) {
+            students = students.stream().filter(student -> student.getDegreeType().equals(DegreeType.valueOf(degreeType)))
+                    .filter(student -> student.getDepartment().equals(Department.valueOf(department)))
+                    .filter(student -> student.getAdmissionYear() == admissionYear)
+                    .collect(Collectors.toList());
+            for (Student student : students) {
+                studentResponses.add(new StudentResponse(student));
+            }
+            return studentResponses;
+        }
+        return Collections.emptyList();
     }
 }

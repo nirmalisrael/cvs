@@ -1,16 +1,17 @@
 package com.algoriant.cvs.service;
 
 import com.algoriant.cvs.dto.CandidateDTO;
-import com.algoriant.cvs.entity.Candidate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public interface CandidateService {
 
-    Candidate createCandidate(CandidateDTO candidate);
+    CandidateDTO createCandidate(CandidateDTO candidate);
 
+    List<CandidateDTO> createCandidates(List<CandidateDTO> candidateDTOS);
     String removeCandidate(String candidateId);
 
     CandidateDTO getCandidateById(String candidateId);

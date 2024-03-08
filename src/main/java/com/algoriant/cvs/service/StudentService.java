@@ -8,6 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public interface StudentService {
@@ -25,4 +26,9 @@ public interface StudentService {
     byte[] uploadProfileImage(MultipartFile file, String deptNo) throws IOException;
 
     byte[] getStudentImageByDeptNo(String deptNo);
+
+    Map<String, String> hasVoted(String deptNo, String electionName);
+
+
+    List<StudentResponse> getStudentsByFiler(String degreeType, String department, int admissionYear);
 }
