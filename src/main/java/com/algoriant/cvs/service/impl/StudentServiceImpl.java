@@ -161,7 +161,7 @@ public class StudentServiceImpl implements StudentService {
     public List<StudentResponse> getStudentsByFiler(String degreeType, String department, int admissionYear) {
         List<Student> students = studentRepository.findAll();
         List<StudentResponse> studentResponses = new ArrayList<>();
-        if (degreeType == null && department == null && admissionYear == 0) {
+        if (Objects.equals(degreeType, "null") && Objects.equals(department, "null") && admissionYear == 0) {
             for (Student student : students) {
                 studentResponses.add(new StudentResponse(student));
             }
