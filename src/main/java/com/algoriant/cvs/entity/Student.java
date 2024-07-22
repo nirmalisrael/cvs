@@ -8,13 +8,11 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sun.istack.NotNull;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Entity
-@Table(name = "student_details")
 public class Student {
 
     @Id
@@ -50,7 +48,13 @@ public class Student {
     @NotNull
     private String address;
 
-    public Student() { }
+    private byte[] profileImage;
+
+    @OneToMany(mappedBy = "student")
+    private List<Vote> votes;
+
+    public Student() {
+    }
 
     public Student(StudentRequest studentRequest) {
         if (studentRequest.getStudentName() != null)
@@ -151,5 +155,21 @@ public class Student {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public List<Vote> getVotes() {
+        return votes;
+    }
+
+    public void setVotes(List<Vote> votes) {
+        this.votes = votes;
+    }
+
+    public byte[] getProfileImage() {
+        return profileImage;
+    }
+
+    public void setProfileImage(byte[] profileImage) {
+        this.profileImage = profileImage;
     }
 }

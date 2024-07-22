@@ -1,24 +1,33 @@
 package com.algoriant.cvs.controller;
 
+import com.algoriant.cvs.dto.DegreeType;
+import com.algoriant.cvs.dto.Department;
 import com.algoriant.cvs.dto.StudentRequest;
+import com.algoriant.cvs.dto.StudentResponse;
 import com.algoriant.cvs.entity.Student;
-import com.algoriant.cvs.service.impl.StudentServiceImpl;
+import com.algoriant.cvs.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
-@RequestMapping(value = "/cvs", produces = {MediaType.APPLICATION_JSON_VALUE})
+@RequestMapping(value = "/cvs", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
 public class StudentController {
 
     @Autowired
-    StudentServiceImpl studentService;
+    StudentService studentService;
 
     @PostMapping(value = "/createStudent")
+    @PreAuthorize("hasAuthority('admin')")
     public ResponseEntity<Student> createStudent(@RequestBody StudentRequest studentRequest) {
         try {
             return new ResponseEntity<>(studentService.createStudent(studentRequest), HttpStatus.OK);
@@ -27,8 +36,11 @@ public class StudentController {
         }
     }
 
+
     @PutMapping(value = "/modifyStudent")
-    public ResponseEntity<Student> modifyStudent(@RequestParam String deptNo, @RequestBody StudentRequest studentRequest) {
+    @PreAuthorize("hasAuthority('admin')")
+    public ResponseEntity<StudentResponse> modifyStudent(@RequestParam String deptNo,
+                                                         @RequestBody StudentRequest studentRequest) {
         try {
             return new ResponseEntity<>(studentService.modifyStudent(deptNo, studentRequest), HttpStatus.OK);
         } catch (Exception ex) {
@@ -37,16 +49,21 @@ public class StudentController {
     }
 
     @DeleteMapping("/removeStudent")
-    public ResponseEntity<String> removeStudent(@RequestParam String deptNo) {
+    @PreAuthorize("hasAuthority('admin')")
+    public ResponseEntity<Map<String, String>> removeStudent(@RequestParam String deptNo) {
+        Map<String, String> response = new HashMap<>();
         try {
-            return new ResponseEntity<>(studentService.removeStudent(deptNo), HttpStatus.OK);
-        } catch (Exception ex) {
-            return new ResponseEntity<>(studentService.removeStudent(deptNo), HttpStatus.NO_CONTENT);
+            response.put("message", studentService.removeStudent(deptNo));
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (Exception e) {
+            response.put("message", deptNo + " is not found");
+            return new ResponseEntity<>(response, HttpStatus.NO_CONTENT);
         }
     }
 
     @GetMapping(value = "/getStudentById")
-    public ResponseEntity<Student> getStudentById(String deptNo) {
+    @PreAuthorize("hasAnyAuthority('admin', 'user')")
+    public ResponseEntity<StudentResponse> getStudentById(String deptNo) {
         try {
             return new ResponseEntity<>(studentService.getStudentById(deptNo), HttpStatus.OK);
         } catch (Exception ex) {
@@ -55,11 +72,60 @@ public class StudentController {
     }
 
     @GetMapping(value = "/getAllStudents")
-    public ResponseEntity<List<Student>> getAllStudents() {
+    @PreAuthorize("hasAuthority('admin')")
+    public ResponseEntity<List<StudentResponse>> getAllStudents() {
         try {
             return new ResponseEntity<>(studentService.getAllStudents(), HttpStatus.OK);
         } catch (Exception ex) {
+            return new ResponseEntity<>(Collections.emptyList(), HttpStatus.NO_CONTENT);
+        }
+    }
+
+    @PreAuthorize("hasAuthority('admin')")
+    @PostMapping("/uploadStudentImage")
+    public ResponseEntity<byte[]> uploadStudentImage(@RequestParam MultipartFile file, @RequestParam String deptNo) {
+        try {
+            return ResponseEntity.status(HttpStatus.OK)
+                    .contentType(MediaType.valueOf("image/png"))
+                    .body(studentService.uploadProfileImage(file, deptNo));
+        } catch (Exception ex) {
+            return new ResponseEntity<>(null, HttpStatus.NOT_ACCEPTABLE);
+        }
+    }
+
+    @PreAuthorize("hasAuthority('admin')")
+    @GetMapping("/getStudentImageByDeptNo")
+    public ResponseEntity<byte[]> getStudentImageByDeptNo(@RequestParam String deptNo) {
+        try {
+            return ResponseEntity.status(HttpStatus.OK)
+                    .contentType(MediaType.valueOf("image/png"))
+                    .body(studentService.getStudentImageByDeptNo(deptNo));
+        } catch (Exception ex) {
             return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+        }
+    }
+
+    @PreAuthorize("hasAnyAuthority('admin','user')")
+    @GetMapping("/hasVoted")
+    public ResponseEntity<Map<String, String >> hasVoted(@RequestParam String deptNo,
+                                                         @RequestParam String electionName) {
+        try {
+            return new ResponseEntity<>(studentService.hasVoted(deptNo, electionName), HttpStatus.OK);
+        } catch (Exception ex) {
+            return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+        }
+    }
+
+    @PreAuthorize("hasAuthority('admin')")
+    @GetMapping("/getStudentsByFiler")
+    public ResponseEntity<List<StudentResponse>> getStudentsByFiler(@RequestParam String degreeType,
+                                                                    @RequestParam String department,
+                                                                    @RequestParam int admissionYear) {
+        try {
+            return new ResponseEntity<>(studentService.getStudentsByFiler(degreeType, department, admissionYear),
+                    HttpStatus.OK);
+        } catch (Exception ex) {
+            return new ResponseEntity<>(Collections.emptyList(), HttpStatus.NO_CONTENT);
         }
     }
 }

@@ -1,8 +1,7 @@
 package com.algoriant.cvs.controller;
 
-import com.algoriant.cvs.entity.Role;
-import com.algoriant.cvs.service.RoleService;
-import com.algoriant.cvs.service.impl.RoleServiceImpl;
+import com.algoriant.cvs.entity.User;
+import com.algoriant.cvs.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -16,28 +15,29 @@ import java.util.Map;
 
 @RestController
 @RequestMapping(value = "/cvs", produces = {MediaType.APPLICATION_JSON_VALUE})
-@PreAuthorize("hasAuthority('admin')")
-public class RoleController {
+public class UserController {
 
     @Autowired
-    private RoleService roleService;
+    UserServiceImpl userService;
 
-    @PostMapping(value = "/createRole")
-    public ResponseEntity<Role> createRole(@RequestBody Role role) {
+    @PostMapping(value = "/createUser")
+    @PreAuthorize("hasAuthority('admin')")
+    public ResponseEntity<User> createUser(@RequestBody User user) {
         try {
-            return new ResponseEntity<>(roleService.createRole(role), HttpStatus.OK);
+            return new ResponseEntity<>(userService.createUser(user), HttpStatus.OK);
         } catch (Exception exception) {
             return new ResponseEntity<>(null, HttpStatus.NOT_ACCEPTABLE);
         }
     }
 
-    @DeleteMapping(value = "/removeRole")
-    public ResponseEntity<Map<String, String>> removeRole(@RequestParam String roleName) {
+    @DeleteMapping(value = "/removeUser")
+    @PreAuthorize("hasAuthority('admin')")
+    public ResponseEntity<Map<String, String>> removeUser(String username) {
         Map<String, String> response = new HashMap<>();
         try {
-            String deleteResponse = roleService.removeRole(roleName);
+            String deleteResponse = userService.removeUser(username);
             if (deleteResponse == null)
-                response.put("message", roleName + " NOT FOUND");
+                response.put("message", username + " NOT FOUND");
             else
                 response.put("message", deleteResponse);
             return new ResponseEntity<>(response, HttpStatus.OK);
@@ -46,22 +46,24 @@ public class RoleController {
         }
     }
 
-    @GetMapping(value = "/getRoleById")
-    public ResponseEntity<Role> getRoleById(@RequestParam String roleName) {
+    @GetMapping(value = "/getUserByUsername")
+    @PreAuthorize("hasAuthority('admin')")
+    public ResponseEntity<User> getUserByUsername(@RequestParam String username) {
         try {
-            return new ResponseEntity<>(roleService.getRoleById(roleName), HttpStatus.OK);
+            User user = (User) userService.loadUserByUsername(username);
+            return new ResponseEntity<>(user, HttpStatus.OK);
         } catch (Exception exception) {
             return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
         }
     }
 
-    @GetMapping(value = "/getAllRoles")
-    public ResponseEntity<List<Role>> getAllRoles() {
+    @GetMapping(value = "/getAllUsers")
+    @PreAuthorize("hasAuthority('admin')")
+    public ResponseEntity<List<User>> getAllUsers() {
         try {
-            return new ResponseEntity<>(roleService.getAllRoles(), HttpStatus.OK);
+            return new ResponseEntity<>(userService.getAllUsers(), HttpStatus.OK);
         } catch (Exception exception) {
             return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
         }
     }
-
 }
